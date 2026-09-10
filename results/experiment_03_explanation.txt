@@ -1,0 +1,138 @@
+Experiment 03: Machine Learning for Inverse PDE
+
+
+1. Idea of the experiment
+
+
+In Experiment 02, I estimated the unknown parameter k by testing
+different values.
+
+In this experiment, I use a simple machine learning method to estimate k.
+
+The goal is to see if machine learning can give a good initial value
+for k.
+
+
+2. Training data
+
+
+First, I used different values of k between:
+
+0.05 and 0.15
+
+For each value of k, I solved the heat equation.
+
+Then I recorded the temperature at the middle of the line.
+
+The model learns the relationship between temperature and k.
+
+Then, the temperature is used to estimate k.
+
+[This gives training data:temperature= k]
+
+
+3. Polynomial Regression
+
+
+I used a simple polynomial model of degree 3.
+
+The model has the form:
+
+k = a0 + a1*T + a2*T^2 + a3*T^3
+
+where:
+
+T = temperature
+k = estimated heat parameter
+
+The coefficients a0, a1, a2, and a3 are calculated from the training data.
+
+
+4. Ridge regularization
+
+
+I also used a simple Ridge regularization term.
+
+The value used was:
+
+alpha = 0.001
+
+The purpose is to make the model more stable and reduce the effect
+of small changes in the data.
+
+
+5. Meaning of i
+
+
+The variable i is still used in the heat equation calculation.
+
+For each position i, the program uses:
+
+old_u[i - 1]  , temperature on the left
+old_u[i]      , temperature at the current position
+old_u[i + 1]  , temperature on the right
+
+The program repeats this calculation for all positions inside the line.
+
+
+6. Prediction
+
+
+After training the model, I gave it the measured temperature:
+
+11.487271887444848
+
+The model then predicted the value of k.
+
+
+7. Result
+
+
+True k:
+
+0.1
+
+Measured temperature:
+
+11.487271887444848
+
+ML predicted k:
+
+0.09230076967320817
+
+Prediction error:
+
+0.007699230326791831
+
+
+8. Simple interpretation
+
+
+The machine learning model did not find exactly 0.1.
+
+It predicted approximately:
+
+0.0923
+
+The error was approximately:
+
+0.0077
+
+The result is reasonably close to the true value.
+
+This means that the machine learning model can provide a useful
+initial estimate of k.
+
+
+9. Conclusion
+
+
+In this experiment, I used a simple Polynomial Regression model
+with Ridge regularization.
+
+The model learned the relationship between temperature and k.
+
+The predicted value was close to the true value.
+
+This prediction can be used as an initial value for the optimization
+experiments in the next part of the project.

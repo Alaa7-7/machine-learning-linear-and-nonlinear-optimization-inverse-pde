@@ -1,0 +1,399 @@
+Experiment 08: Convex Optimization
+
+The goal of this experiment is to use Convex Optimization
+to estimate the unknown parameter k in the inverse heat equation.
+
+The same 1D heat equation is used:
+
+u_t = k * u_xx
+
+The unknown parameter is:
+
+k = 0.1
+
+The value of k is unknown in the inverse problem.
+The temperature measurement is used to estimate k.
+
+1. Heat Equation
+   
+
+The heat equation is:
+
+u_t = k * u_xx
+
+where:
+
+u = temperature
+
+t = time
+
+x = position
+
+k = heat parameter
+
+The second derivative with respect to x is approximated
+using the finite difference formula:
+
+u_xx ˜ (u[i+1] - 2*u[i] + u[i-1]) / dx^2
+
+Here, i is the position index.
+
+For example:
+
+i = 1 , first internal position
+
+i = 2 , second internal position
+
+i = 3 , third internal position
+
+The program uses the three values:
+
+u[i-1]
+u[i]
+u[i+1]
+
+to calculate the temperature at position i.
+
+The time update formula is:
+
+u_new[i] =
+u_old[i]
+
++ k * dt / dx^2
+
+* (u_old[i+1] - 2*u_old[i] + u_old[i-1])
+
+2. Creating the Measured Temperature
+   
+
+The true value is:
+
+k = 0.1
+
+The heat equation is solved using this value.
+
+The temperature at the middle of the domain is then used
+as the measured temperature.
+
+The result is:
+
+T_measured = 11.487271887444848
+
+3. Convex Optimization Idea
+   
+
+I purpose of optimization is to find a value of k that
+gives a temperature close to the measured temperature.
+
+For each possible value of k, the heat equation gives a
+predicted temperature:
+
+T(k)
+
+The difference between the predicted temperature and the
+measured temperature is:
+
+T(k) - T_measured
+
+The objective function is:
+
+f(k) = (T(k) - T_measured)^2
+
+The square is used so that the error is always positive.
+
+For example:
+
+If the error is:
+
+T(k) - T_measured = 2
+
+then:
+
+f(k) = 2^2 = 4
+
+If the error is:
+
+T(k) - T_measured = -2
+
+then:
+
+f(k) = (-2)^2 = 4
+
+Therefore, the optimization tries to minimize:
+
+f(k) = (T(k) - T_measured)^2
+
+The optimization problem can be written as:
+
+minimize f(k)
+
+where:
+
+f(k) = (T(k) - T_measured)^2
+
+subject to:
+
+0.05 <= k <= 0.15
+
+4. Why is the Problem Called Convex?
+   
+
+A convex function has a simple shape where a minimum can be
+found without having many separate minimum points.
+
+A simple example of a convex function is:
+
+f(k) = (k - 0.1)^2
+
+This function has one minimum point at:
+
+k = 0.1
+
+The value of the function at this point is:
+
+f(0.1) = 0
+
+The idea of the experiment is to use the same type of
+minimum-error objective:
+
+f(k) = (T(k) - T_measured)^2
+
+and search for the value of k that gives the smallest error.
+
+The important idea is:
+
+small error , better value of k
+
+large error , worse value of k
+
+5. Initial Guess
+  
+
+The optimization starts from:
+
+k = 0.08
+
+This is called the initial guess.
+
+The initial guess is not the final answer.
+
+It is only the starting point for the optimization.
+
+The program then searches for a better value of k.
+
+6. Bounds
+   
+
+The program uses:
+
+0.05 <= k <= 0.15
+
+These are the lower and upper bounds for k.
+
+The lower bound is:
+
+k_min = 0.05
+
+The upper bound is:
+
+k_max = 0.15
+
+The true value:
+
+k = 0.1
+
+is inside this range.
+
+7. Optimization Step
+   
+
+The Python function:
+
+minimize()
+
+is used to find the value of k that minimizes the objective
+function.
+
+The optimization follows this idea:
+
+Step 1:
+Start from:
+
+k = 0.08
+
+Step 2:
+Use this k in the heat equation.
+
+Step 3:
+Calculate the predicted temperature.
+
+Step 4:
+Compare the predicted temperature with:
+
+T_measured = 11.487271887444848
+
+Step 5:
+Calculate:
+
+f(k) = (T(k) - T_measured)^2
+
+Step 6:
+Change k and search for a smaller value of f(k).
+
+Step 7:
+Stop when a value close to the minimum is found.
+
+8. Meaning of i
+   
+
+The symbol i is only an index for the position in the
+temperature array.
+
+For example:
+
+i = 1
+
+means the program is calculating the temperature at position 1.
+
+The formula uses:
+
+i-1
+i
+i+1
+
+because the finite difference method uses the point before,
+the current point, and the point after.
+
+The symbol i is not another physical parameter.
+
+9. Results
+  
+
+The true value is:
+
+k = 0.1
+
+The measured temperature is:
+
+T_measured = 11.487271887444848
+
+The initial guess is:
+
+k = 0.08
+
+The Convex Optimization result is:
+
+k = 0.09999999999999999
+
+This is approximately:
+
+k = 0.1
+
+The parameter error is:
+
+|k_estimated - k_true|
+
+Therefore:
+
+|0.09999999999999999 - 0.1|
+
+which is approximately:
+
+1.39 × 10^-17
+
+This is practically zero.
+
+The objective error is:
+
+0.0
+
+10. Interpretation of the Result
+
+The optimization started from:
+
+k = 0.08
+
+and found a value very close to:
+
+k = 0.1
+
+This means that the optimization successfully found the
+value that gives the measured temperature with almost zero
+error.
+
+The result is very close to the true value because the
+measurement in this experiment does not contain noise.
+
+11. Difference Between the Initial Guess and the Final Result
+    
+
+The initial guess was:
+
+k = 0.08
+
+The final result was:
+
+k = 0.1
+
+This shows that the initial guess does not need to be the
+correct answer.
+
+It only gives the optimization method a starting point.
+
+The optimization changes k until the objective function
+becomes very small.
+
+12. Important Note About the Convex Optimization Experiment
+
+The objective function used in this experiment has a
+convex-type squared-error form:
+
+f(k) = (T(k) - T_measured)^2
+
+The Python function minimize() with the Nelder-Mead method
+was used to find the minimum of this objective function.
+
+Nelder-Mead is a numerical optimization method.
+It is not a solver designed specifically for Convex Programming.
+
+Therefore, this experiment focuses on the idea of using a
+convex-type objective function and finding its minimum.
+
+It is more accurate to say:
+
+"The objective function is designed as a convex-type
+squared-error function, and a numerical optimization method
+is used to find its minimum."
+
+This wording is used because the experiment is a simple
+student-level demonstration of the convex optimization idea.
+
+The purpose is to understand how a convex objective function
+can be minimized to estimate the unknown parameter k.
+
+A more advanced convex optimization experiment could use a
+solver specifically designed for convex optimization.
+
+13. Conclusion
+    
+
+This experiment shows how Convex Optimization can be used
+for an inverse PDE problem.
+
+The temperature measurement is used to define an objective
+function:
+
+f(k) = (T(k) - T_measured)^2
+
+The optimization then searches for the value of k that
+minimizes this error.
+
+The final estimated value is:
+
+k ˜ 0.1
+
+which is very close to the true value.
+
+The experiment shows that an optimization method can use
+temperature data to estimate an unknown parameter in a
+heat equation.

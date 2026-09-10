@@ -1,0 +1,510 @@
+Experiment 09 Stochastic Programming
+
+The goal of this experiment is to use Stochastic Programming
+to estimate the unknown parameter k in the inverse heat equation.
+
+The main idea is to consider uncertainty in the temperature
+measurements.
+
+In a real problem, a measurement can change because of noise.
+
+Instead of using only one measured temperature, this experiment
+uses several possible measurements.
+
+The optimization then finds a value of k that gives a small
+average error for all these measurements.
+
+1. Heat Equation
+   
+
+The same 1D heat equation is used:
+
+u_t = k * u_xx
+
+where:
+
+u = temperature
+
+t = time
+
+x = position
+
+k = unknown heat parameter
+
+The second derivative with respect to x is approximated by:
+
+u_xx ˜
+(u[i+1] - 2*u[i] + u[i-1]) / dx^2
+
+Here, i is the position index.
+
+The time update formula is:
+
+u_new[i] =
+u_old[i]
+
++ k * dt / dx^2
+
+* (u_old[i+1] - 2*u_old[i] + u_old[i-1])
+
+The symbol i is only an index.
+
+It tells the program which position is being calculated.
+
+For example:
+
+i = 1 -> first internal position
+
+i = 2 -> second internal position
+
+i = 3 -> third internal position
+
+2. Clean Temperature
+   
+
+The true value of the parameter is:
+
+k = 0.1
+
+The heat equation is solved using this value.
+
+The temperature at the middle of the domain is:
+
+T_clean = 11.487271887444848
+
+This is called the clean temperature because it does not
+contain artificial noise.
+
+3. Adding Random Noise
+   
+
+A noise level of:
+
+5%
+
+is used in this experiment.
+
+The noise is generated using:
+
+noise_i = Normal(0, 0.05 * T_clean)
+
+The measured temperature is then:
+
+T_i = T_clean + noise_i
+
+Here:
+
+i = measurement number
+
+T_i = the i-th measured temperature
+
+T_clean = clean temperature
+
+noise_i = random noise for measurement i
+
+The value 0.05 represents 5%:
+
+0.05 = 5 / 100
+
+Therefore, the standard deviation of the noise is:
+
+0.05 * T_clean
+
+Using the clean temperature:
+
+0.05 * 11.487271887444848
+
+˜ 0.57436
+
+This means that the random noise has a standard deviation
+of approximately 0.57436.
+
+4. Why Use 5% Noise?
+   
+
+The 5% value was chosen because it represents a medium level
+of measurement noise.
+
+It is also useful for connecting this experiment with
+Experiment 06.
+
+Experiment 06 tested different noise levels:
+
+0%
+1%
+5%
+10%
+
+Experiment 09 focuses on the 5% case and adds several
+possible measurements.
+
+This allows the stochastic method to study uncertainty
+instead of relying on only one noisy measurement.
+
+5. Why Use 20 Measurements?
+   
+
+The experiment creates:
+
+N = 20
+
+possible measurements.
+
+A larger number of measurements gives more examples of
+possible noisy measurements.
+
+Twenty measurements were chosen because it is a simple number
+that is large enough to demonstrate the idea of uncertainty
+while keeping the experiment simple and fast.
+
+The goal is not to represent a specific real dataset.
+
+6. Index i
+  
+
+The symbol i is used to identify each measurement.
+
+Since:
+
+N = 20
+
+the index can be:
+
+i = 1, 2, 3, ..., 20
+
+For example:
+
+i = 1 , first noisy measurement
+
+i = 2 , second noisy measurement
+
+i = 3 , third noisy measurement
+
+......
+
+i = 20 , twentieth noisy measurement
+
+The symbol i does not represent a physical parameter.
+
+It is only an index.
+
+7. Predicted Temperature
+   
+
+For a selected value of k, the heat equation is solved.
+
+The predicted temperature at the middle of the domain is:
+
+T(k)
+
+The value T(k) is compared with each noisy measurement:
+
+T_1, T_2, ..., T_20
+
+For each measurement, the squared error is:
+
+error_i = (T(k) - T_i)^2
+
+Here:
+
+i = measurement number
+
+T(k) = predicted temperature for the current k
+
+T_i = i-th measured temperature
+
+8. Average Error
+   
+
+The experiment does not minimize only one error.
+
+It calculates the average of all 20 errors.
+
+The average error is:
+
+f(k) =
+(1/N) * sum from i=1 to N
+(T(k) - T_i)^2
+
+Since:
+
+N = 20
+
+the formula becomes:
+
+f(k) =
+(1/20) * sum from i=1 to 20
+(T(k) - T_i)^2
+
+The optimization problem is therefore:
+
+minimize f(k)
+
+where:
+
+f(k) =
+(1/20) * sum from i=1 to 20
+(T(k) - T_i)^2
+
+subject to:
+
+0.05 <= k <= 0.15
+
+9. Why Is This Stochastic Programming?
+   
+
+The problem contains uncertainty because the measured
+temperatures contain random noise.
+
+The values:
+
+T_1, T_2, ..., T_20
+
+are different possible measurements.
+
+The optimization searches for a value of k that performs well
+on average across these different measurements.
+
+This is the main idea of Stochastic Programming:
+
+optimization under uncertainty.
+
+10. Initial Guess
+    
+
+The optimization starts from:
+
+k = 0.0923
+
+This value comes from the Machine Learning experiment.
+
+It is used as the initial guess.
+
+The initial guess is only the starting point.
+
+It is not the final answer.
+
+11. Bounds
+    
+
+The optimization uses:
+
+0.05 <= k <= 0.15
+
+Therefore, the estimated value of k must stay inside this
+range.
+
+12. Optimization Steps
+    
+
+Step 1:
+
+Use:
+
+k = 0.1
+
+to calculate the clean temperature.
+
+Step 2:
+
+Calculate:
+
+T_clean = 11.487271887444848
+
+Step 3:
+
+Generate 20 random noise values.
+
+Step 4:
+
+Create 20 possible measurements using:
+
+T_i = T_clean + noise_i
+
+Step 5:
+
+Choose an initial value:
+
+k = 0.0923
+
+Step 6:
+
+For the current k, solve the heat equation.
+
+Step 7:
+
+Calculate the predicted temperature:
+
+T(k)
+
+Step 8:
+
+Calculate the error for every measurement:
+
+error_i = (T(k) - T_i)^2
+
+Step 9:
+
+Calculate the average error:
+
+f(k) =
+(1/20) * sum from i=1 to 20
+(T(k) - T_i)^2
+
+Step 10:
+
+Change k and search for a smaller average error.
+
+Step 11:
+
+Stop when a good minimum is found.
+
+13. Results
+    
+
+The true value is:
+
+k = 0.1
+
+The clean temperature is:
+
+T_clean = 11.487271887444848
+
+The noise level is:
+
+5%
+
+The number of measurements is:
+
+20
+
+The initial ML guess is:
+
+k = 0.0923
+
+The Stochastic Programming result is:
+
+k = 0.099438828125
+
+The parameter error is:
+
+|0.099438828125 - 0.1|
+
+= 0.000561171875
+
+The average objective error is:
+
+0.28886112165169864
+
+14. Interpretation
+    
+
+The estimated value is:
+
+k = 0.099438828125
+
+The true value is:
+
+k = 0.1
+
+Therefore, the estimated value is very close to the true value.
+
+The parameter error is:
+
+0.000561171875
+
+This is a small error.
+
+The result shows that the method can estimate k even when
+the measurements contain random noise.
+
+The estimated value is not exactly 0.1 because the optimization
+is working with noisy measurements.
+
+15. Difference Between Experiment 06 and Experiment 09
+    
+
+Experiment 06 studies the effect of different noise levels.
+
+It uses one noisy measurement for each noise level.
+
+Experiment 09 uses:
+
+5% noise
+
+and creates:
+
+20 different noisy measurements.
+
+Then the optimization uses the average error over the
+20 measurements.
+
+Therefore:
+
+Experiment 06:
+Study the effect of noise.
+
+Experiment 09:
+Use several noisy measurements to perform optimization
+under uncertainty.
+
+16. Conclusion
+    
+
+This experiment shows how Stochastic Programming can be used
+for an inverse PDE problem with uncertain measurements.
+
+Instead of using only one measurement, several possible
+measurements are created using random noise.
+
+The optimization minimizes the average squared error:
+
+f(k) =
+(1/20) * sum from i=1 to 20
+(T(k) - T_i)^2
+
+The final estimated value is:
+
+k = 0.099438828125
+
+which is close to the true value:
+
+k = 0.1
+
+Therefore, the experiment shows that optimization can still
+estimate an unknown PDE parameter when the measurements
+contain uncertainty.
+
+### Important Note About the Symbol i
+
+The symbol i is used in two different parts of the experiment.
+
+In the heat equation, i represents the position index.
+
+For example:
+
+i = 1 , first internal position
+
+i = 2 , second internal position
+
+In the stochastic part, i represents the measurement number.
+
+For example:
+
+i = 1 , first noisy measurement
+
+i = 2 , second noisy measurement
+
+Therefore, the meaning of i depends on where it is used.
+
+In the heat equation:
+
+i = position index
+
+In the stochastic programming part:
+
+i = measurement index
+
+This is normal in mathematics and programming.
+
+The symbol i is simply an index used to organize values.

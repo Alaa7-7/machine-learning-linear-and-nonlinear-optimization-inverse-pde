@@ -1,0 +1,453 @@
+Experiment 10: Final Comparison
+
+
+Project:
+Machine Learning and Linear and Nonlinear Optimization
+for an Inverse PDE Problem
+
+
+1. Idea of the Experiment
+
+
+The previous experiments used different methods to estimate
+the unknown parameter k in the heat equation.
+
+The true value used in the model is:
+
+k = 0.1
+
+In the inverse PDE problem, the goal is to estimate k from
+a measured temperature.
+
+Experiment 10 compares the results obtained by the different
+optimization methods.
+
+The main question is:
+
+How do the different optimization methods compare when
+estimating the unknown parameter k?
+
+
+2. Why Did I Do This Experiment?
+
+
+Each previous experiment tested a different method.
+
+Machine Learning gave an initial estimate.
+
+Linear Programming used a simple linear approximation.
+
+Nonlinear Optimization used the PDE model directly in the
+objective function.
+
+Integer Programming selected one value from a list of
+possible values.
+
+Convex Optimization used a squared-error objective.
+
+Stochastic Programming used several noisy measurements.
+
+Therefore, a final comparison is needed to see how these
+methods perform compared with each other.
+
+
+3. True Value of k
+
+
+The true value used in the experiments is:
+
+k_true = 0.1
+
+This value was used to create the original temperature
+measurement from the heat equation.
+
+The estimated value from each method is compared with this
+true value.
+
+
+4. Error Formula
+
+
+The parameter error is calculated using:
+
+Error = |k_estimated - k_true|
+
+The absolute value is used because only the size of the
+difference is important.
+
+For example, for Nonlinear Optimization:
+
+k_estimated = 0.100015703
+
+k_true = 0.1
+
+Therefore:
+
+Error = |0.100015703 - 0.1|
+
+Error = 0.000015703
+
+This is a very small error.
+
+
+5. Methods Compared
+
+
+The final comparison includes:
+
+1. Linear Programming
+2. Nonlinear Optimization
+3. Integer Programming
+4. Convex Optimization
+5. Stochastic Programming
+
+
+6. Linear Programming Result
+
+
+The Linear Programming result was:
+
+Estimated k = 0.050000198
+
+The parameter error was:
+
+Error = 0.049999802
+
+This is a relatively large error.
+
+In Experiment 04, a simple linear relationship between
+temperature and k was used:
+
+T = a * k + b
+
+This linear approximation was not accurate enough for the
+inverse PDE problem.
+
+This result motivated the use of Nonlinear Optimization.
+
+
+7. Nonlinear Optimization Result
+
+
+The Nonlinear Optimization result was:
+
+Estimated k = 0.100015703
+
+The parameter error was:
+
+Error = 0.000015703
+
+This value is very close to the true value:
+
+k_true = 0.1
+
+The initial guess came from the Machine Learning experiment:
+
+Initial guess = 0.0923
+
+Therefore, Machine Learning provided a starting point and
+Nonlinear Optimization improved the estimate.
+
+
+8. Integer Programming Result
+
+
+The Integer Programming result was:
+
+Estimated k = 0.1
+
+The parameter error was:
+
+Error = 0.0
+
+However, there is an important point.
+
+The possible values of k were:
+
+0.05, 0.06, 0.07, ..., 0.15
+
+The true value:
+
+0.1
+
+was already included in this list.
+
+Therefore, Integer Programming could select the exact
+true value.
+
+This does not mean that Integer Programming is always
+more accurate than Nonlinear Optimization.
+
+The result depends on the set of possible values.
+
+
+9. Convex Optimization Result
+
+
+The Convex Optimization experiment used the squared-error
+objective:
+
+f(k) = (T(k) - T_measured)^2
+
+The goal was:
+
+minimize f(k)
+
+The squared error is always positive or zero.
+
+A smaller value means that the predicted temperature is
+closer to the measured temperature.
+
+The estimated value was approximately:
+
+k = 0.1
+
+The parameter error was approximately zero.
+
+Important Note:
+
+The Python function minimize() with the Nelder-Mead method
+was used.
+
+Nelder-Mead is a numerical optimization method.
+
+It is not a solver designed specifically for Convex
+Programming.
+
+Therefore, this experiment demonstrates the idea of a
+convex-type squared-error objective and its numerical
+minimization.
+
+
+10. Stochastic Programming Result
+
+
+The Stochastic Programming experiment used several noisy
+measurements.
+
+The number of measurements was:
+
+N = 20
+
+The noise level was:
+
+5%
+
+For each measurement, the noisy temperature was created as:
+
+T_i = T_clean + noise_i
+
+The error for each measurement was:
+
+error_i = (T(k) - T_i)^2
+
+The average error was:
+
+f(k) = (1/N) * sum(error_i)
+
+For N = 20:
+
+f(k) = (1/20) * sum from i=1 to 20 of
+       (T(k) - T_i)^2
+
+The result was:
+
+Estimated k = 0.099438828
+
+The parameter error was:
+
+Error = 0.000561172
+
+This result is close to the true value even though the
+measurements contain noise.
+
+
+11. Final Results
+
+
+The final comparison is:
+
+Method                     Estimated k        Error
+
+Linear Programming         0.050000198      0.049999802
+
+Nonlinear Optimization     0.100015703      0.000015703
+
+Integer Programming        0.100000000      0.000000000
+
+Convex Optimization        0.100000000      0.000000000
+
+Stochastic Programming     0.099438828      0.000561172
+
+
+12. Machine Learning and Nonlinear Optimization
+
+
+Machine Learning estimated:
+
+k_ML = 0.0923007697
+
+The ML error was:
+
+Error_ML = 0.0076992303
+
+Nonlinear Optimization estimated:
+
+k_NLP = 0.1000157031
+
+The NLP error was:
+
+Error_NLP = 0.0000157031
+
+The improvement factor was calculated as:
+
+Improvement = Error_ML / Error_NLP
+
+The result was:
+
+Improvement = 490.299
+
+Therefore, the NLP error was about 490 times smaller than
+the Machine Learning error in this experiment.
+
+
+13. Role of Machine Learning
+
+
+Machine Learning was not used to replace optimization.
+
+Instead, Machine Learning was used to provide an initial
+estimate.
+
+The ML estimate was:
+
+k = 0.0923
+
+This value was then used as an initial guess for the
+Nonlinear Optimization experiment.
+
+The optimization improved the estimate to:
+
+k = 0.100015703
+
+This shows the main idea of the project:
+
+Machine Learning can help optimization by providing a
+useful initial estimate.
+
+
+14. Meaning of i in This Experiment
+
+
+In the comparison code, the symbol i is used as an index.
+
+For example:
+
+i = 0 , Linear Programming
+
+i = 1 , Nonlinear Optimization
+
+i = 2 , Integer Programming
+
+i = 3 , Convex Optimization
+
+i = 4 , Stochastic Programming
+
+Here, i is only used to organize and access the methods.
+
+It does not represent a physical position in the PDE.
+
+It also does not represent a noisy measurement in this
+experiment.
+
+
+15. Main Observation
+
+
+The different methods produced different estimates of k.
+
+Linear Programming gave a less accurate result because of
+the simple linear approximation.
+
+Nonlinear Optimization gave a very accurate continuous
+estimate.
+
+Integer Programming found the exact value because the true
+value was included in the candidate list.
+
+Convex-type optimization minimized a squared-error
+objective and produced a value close to the true value.
+
+Stochastic Programming produced a value close to the true
+value while using several noisy measurements.
+
+
+16. Important Scientific Point
+
+
+The final comparison should not be interpreted as saying
+that one optimization method is always the best method.
+
+Each method has a different purpose.
+
+Integer Programming works with discrete choices.
+
+Nonlinear Optimization works well for continuous parameters
+and nonlinear objective functions.
+
+Stochastic Programming is useful when uncertainty or random
+measurements are present.
+
+The Machine Learning method is useful for obtaining an
+initial estimate.
+
+Therefore, the results depend on the problem and on how
+the experiment is designed.
+
+
+17. Final Conclusion
+
+
+Experiment 10 brings together the results of the previous
+experiments.
+
+The project started with a simple heat equation and then
+formulated an inverse problem to estimate the unknown
+parameter k.
+
+Machine Learning produced an initial estimate.
+
+Linear Programming was tested using a simple linear
+approximation.
+
+Nonlinear Optimization improved the estimate significantly.
+
+Noise experiments showed that measurement errors affect
+the estimated parameter.
+
+Integer Programming demonstrated the use of discrete
+candidate values.
+
+Convex-type optimization demonstrated the minimization of a
+squared-error objective.
+
+Stochastic Programming demonstrated the use of several
+noisy measurements.
+
+The most important result for the project is the improvement
+from Machine Learning to Nonlinear Optimization.
+
+Machine Learning estimated:
+
+k = 0.0923007697
+
+Nonlinear Optimization estimated:
+
+k = 0.1000157031
+
+The NLP error was about 490 times smaller than the ML error.
+
+This supports the main project idea:
+
+Machine Learning can provide an initial estimate, and
+Mathematical Optimization can then improve the estimate.

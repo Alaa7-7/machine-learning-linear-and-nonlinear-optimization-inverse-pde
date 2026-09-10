@@ -1,0 +1,136 @@
+Experiment 01: Simple 1D Heat Equation
+
+
+1. Idea of the experiment
+
+
+In this experiment, I used a simple one-dimensional heat equation.
+
+The goal is to simulate how heat moves along a line over time.
+
+I used a simple numerical method to calculate the temperature at different
+positions and times.
+
+
+2. Mathematical equation
+
+
+The heat equation used in this project is:
+
+u_t = k * u_xx
+
+where:
+
+u = temperature
+t = time
+x = position
+k = heat parameter
+
+
+3. Numerical equation
+
+
+To calculate the temperature, I used the following finite difference formula:
+
+u[i] = old_u[i] + k * dt / (dx * dx) * (
+    old_u[i + 1] - 2 * old_u[i] + old_u[i - 1]
+)
+
+
+4. Meaning of i
+
+
+The variable i represents the position along the line.
+
+For example:
+
+i = 1  , first point inside the line
+i = 2  , second point
+i = 3  , third point
+
+The program calculates the temperature at each point using i.
+
+For each point i, the program uses three temperatures:
+
+old_u[i - 1]  , temperature at the point on the left
+old_u[i]      , temperature at the current point
+old_u[i + 1]  , temperature at the point on the right
+
+This allows the program to calculate how heat moves from one point
+to the next point.
+
+
+5. Parameters used
+
+
+k = 0.1
+
+length = 1.0
+
+time = 0.5
+
+nx = 20
+
+nt = 50
+
+dx = length / nx
+
+dt = time / nt
+
+
+6. Boundary conditions
+
+
+At the left side, the temperature is fixed at:
+
+u[0] = 100
+
+At the right side, the temperature is fixed at:
+
+u[nx] = 0
+
+This means that the left side is hot and the right side is cold.
+
+
+7. Result
+
+
+The program gave:
+
+Heat equation experiment
+
+k = 0.1
+Temperature at the middle = 11.487271887444848
+Temperature at the right side = 0.0
+
+
+8. Simple interpretation
+
+
+The result shows that the temperature at the middle of the line is about:
+
+11.49
+
+The temperature at the right side is:
+
+0
+
+This is expected because the right boundary was fixed at zero temperature.
+
+The experiment shows that the numerical method can simulate the
+temperature distribution of a simple 1D heat equation.
+
+
+9. Conclusion
+
+
+In this first experiment, I implemented a simple numerical solution
+of the 1D heat equation.
+
+I used finite differences to calculate the temperature at different
+positions.
+
+The variable i was used to move through the points inside the line.
+
+The result gives a starting point for the next experiment, where I will
+solve an inverse problem and try to estimate the unknown parameter k.

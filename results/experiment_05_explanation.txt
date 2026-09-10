@@ -1,0 +1,154 @@
+Experiment 05 Nonlinear Optimization
+
+
+1. Idea of the experiment
+
+
+In Experiment 04, I used Linear Programming (LP).
+
+The LP method used a simple linear approximation of the relationship
+between k and temperature.
+
+The result was not accurate.
+
+In this experiment, I use Nonlinear Optimization (NLP).
+
+The goal is to improve the estimate of k by using the heat equation
+directly.
+
+
+2. Mathematical equation
+
+
+I used the same heat equation:
+
+u_t = k * u_xx
+
+The numerical equation is:
+
+u[i] = old_u[i] + k * dt / (dx * dx) * (
+    old_u[i + 1]
+    - 2 * old_u[i]
+    + old_u[i - 1]
+)
+
+
+3. Meaning of i
+
+
+The variable i represents the position inside the line.
+
+For each position i, the program uses three nearby values:
+
+old_u[i - 1]  -> value on the left
+old_u[i]      -> current value
+old_u[i + 1]  -> value on the right
+
+The program repeats this calculation for all positions inside the line.
+
+
+4. Objective function
+
+
+The goal of the optimization is to make the predicted temperature
+as close as possible to the measured temperature.
+
+I used the squared error:
+
+error = (predicted_temperature - measured_temperature)^2
+
+The optimization tries to make this error as small as possible.
+
+
+5. Initial value
+
+
+I used the ML result from Experiment 03 as the initial value:
+
+Initial ML guess = 0.0923
+
+This means that machine learning gives a starting point to the
+nonlinear optimization.
+
+
+6. Bounds
+
+
+I limited k to the following range:
+
+0.05 <= k <= 0.15
+
+This is the same range used in the previous optimization experiment.
+
+
+7. Result
+
+
+The program gave:
+
+True k = 0.1
+
+Measured temperature = 11.487271887444848
+
+Initial ML guess = 0.0923
+
+NLP estimated k = 0.100015703125
+
+Prediction error = 1.5703124999988383e-05
+
+Objective error = 8.189572730508004e-06
+
+
+8. Simple interpretation
+
+
+The ML model gave an initial estimate of:
+
+0.0923
+
+The NLP method improved this value to:
+
+0.1000157
+
+The true value was:
+
+0.1
+
+The final error was approximately:
+
+0.0000157
+
+This is much smaller than the ML error and the LP error.
+
+
+9. Comparison with previous experiments
+
+
+ML estimated:
+
+k = 0.0923
+
+LP estimated:
+
+k = 0.0500
+
+NLP estimated:
+
+k = 0.1000157
+
+The NLP result was the closest to the true value of k.
+
+
+10. Conclusion
+
+
+In this experiment, I used Nonlinear Optimization to improve the
+estimate obtained from machine learning.
+
+The ML result was used as the initial guess.
+
+The NLP method then used the heat equation directly and found a value
+very close to the true value.
+
+This shows that machine learning and nonlinear optimization can work
+together for an inverse PDE problem.

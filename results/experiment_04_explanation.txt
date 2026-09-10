@@ -1,0 +1,156 @@
+Experiment 04 Linear Programming
+
+
+1. Idea of the experiment
+
+
+In this experiment, I used Linear Programming (LP) to estimate
+the unknown parameter k.
+
+The goal was to use optimization to find a value of k that gives
+a temperature close to the measured temperature.
+
+
+2. Mathematical model
+
+
+I used the heat equation:
+
+u_t = k * u_xx
+
+The numerical equation was:
+
+u[i] = old_u[i] + k * dt / (dx * dx) * (
+    old_u[i + 1]
+    - 2 * old_u[i]
+    + old_u[i - 1]
+)
+
+
+3. Meaning of i
+
+
+The variable i represents the position inside the line.
+
+For each position i, the program uses three nearby values:
+
+old_u[i - 1]  , value on the left
+old_u[i]      , current value
+old_u[i + 1]  , value on the right
+
+The program repeats this calculation for the different positions
+inside the line.
+
+
+4. Linear relationship
+
+
+To use Linear Programming, I first used two values of k:
+
+k1 = 0.05
+k2 = 0.15
+
+#Why did I choose k1 = 0.05 and k2 = 0.15?
+
+
+I chose these two values because the true value of k in this experiment
+is 0.1.
+
+The value 0.05 is below 0.1, and the value 0.15 is above 0.1.
+
+Therefore, the two values give a small range around the expected value:
+
+0.05 < 0.1 < 0.15
+
+I used these two values to create a simple linear approximation
+of the relationship between k and the temperature.
+
+This is a simple choice for this student-level experiment.
+
+It also allows the optimization method to search for a value of k
+between a lower value and a higher value.
+
+#The corresponding temperatures were used to create a simple
+linear relationship:
+
+T = a * k + b
+
+where:
+
+T = temperature
+k = heat parameter
+a and b = calculated constants
+
+
+5. Optimization idea
+
+
+The LP problem tries to find a value of k inside the range:
+
+0.05 <= k <= 0.15
+
+The program tries to reduce the difference between the predicted
+temperature and the measured temperature.
+
+An error variable was used to represent this difference.
+
+
+6. Result
+
+
+The program gave:
+
+True k = 0.1
+
+Measured temperature = 11.487271887444848
+
+LP estimated k = 0.05000019751462799
+
+Error = 0.049999802485372016
+
+
+7. Simple interpretation
+
+
+The true value of k was:
+
+0.1
+
+However, the LP method estimated:
+
+0.0500002
+
+This value is close to the lower limit of the tested range.
+
+The error was approximately:
+
+0.05
+
+
+8. Discussion
+
+
+The LP result was not as accurate as the result from Experiment 02.
+
+This can happen because the heat equation is not represented
+perfectly by the simple linear relationship used in this experiment.
+
+The LP method was based on a simplified linear model.
+
+Therefore, this experiment shows a limitation of using a simple
+linear optimization model for this inverse PDE problem.
+
+
+9. Conclusion
+
+
+The LP experiment successfully ran and produced an optimization result.
+
+However, the estimated value of k was not very accurate.
+
+This result is useful because it gives a problem that can be improved
+in the next experiment.
+
+In Experiment 05, I will use Nonlinear Optimization (NLP) to work
+directly with the heat equation and try to obtain a better estimate
+of k.

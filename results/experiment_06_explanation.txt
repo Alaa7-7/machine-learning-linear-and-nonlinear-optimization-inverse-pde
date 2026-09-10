@@ -1,0 +1,236 @@
+Experiment 06 Noise Experiment
+
+The goal of this experiment is to test the inverse PDE method
+when the measured temperature contains noise.
+
+In real problems, measurements are not always exact.
+A sensor can give a value that is slightly different from
+the real temperature.
+
+I use the same heat equation:
+
+u_t = k * u_xx
+
+The unknown parameter is k.
+
+The program first calculates the clean temperature using:
+
+k = 0.1
+
+The clean temperature at the middle of the domain is:
+
+11.487271887444848
+
+#Then, different noise levels are added to the temperature:
+
+0%
+1%
+5%
+10%
+
+For each noise level, the program creates a measured temperature.
+
+## Why did I choose 0%, 1%, 5%, and 10% noise?
+
+I chose these four noise levels to test the method under
+different measurement conditions.
+
+0% noise means that there is no noise.
+This is the ideal case, where the measured temperature is
+the same as the clean temperature.
+
+1% noise represents a small measurement error.
+It allows us to see if the method is still accurate when
+there is a small amount of noise.
+
+5% noise represents a medium level of measurement error.
+It gives a stronger test of the method.
+
+10% noise represents a larger measurement error.
+It allows us to see how the method behaves when the
+measurement is less accurate.
+
+I chose these values because they give a simple progression:
+
+0% , no noise
+1% , small noise
+5% , medium noise
+10% , larger noise
+
+This makes it easy to compare the results and see how the
+parameter error changes when the noise increases.
+
+The goal is not to represent one specific real sensor.
+The goal is to test the robustness of the method at different
+noise levels.
+
+Noise Formula
+
+The noise is generated using:
+
+noise = np.random.normal(
+0,
+noise_level * clean_temperature
+)
+
+The measured temperature is then calculated as:
+
+measured_temperature = clean_temperature + noise
+
+## What does this formula mean?
+
+np.random.normal(0, sigma) generates a random value from a
+normal distribution.
+
+The first value, 0, is the mean of the noise.
+
+This means that the noise is centered around zero.
+
+The second value is the standard deviation.
+
+In our code, the standard deviation is:
+
+noise_level * clean_temperature
+
+For example, when the noise level is 5%:
+
+noise_level = 0.05
+
+clean_temperature = 11.487271887444848
+
+Therefore:
+
+standard deviation = 0.05 * 11.487271887444848
+
+which is approximately:
+
+0.5744
+
+The random noise is then added to the clean temperature:
+
+measured_temperature = clean_temperature + noise
+
+For example, if the generated noise is positive, the measured
+temperature becomes higher than the clean temperature.
+
+If the generated noise is negative, the measured temperature
+becomes lower than the clean temperature.
+
+## Why do I use clean_temperature in the formula?
+
+I use clean_temperature to make the noise relative to the
+size of the temperature.
+
+For example, 10% noise means that the standard deviation of
+the noise is 10% of the clean temperature.
+
+This allows us to define the noise using percentages instead
+of using one fixed temperature value.
+
+Therefore:
+
+0% means no measurement noise.
+
+1% means small relative noise.
+
+5% means medium relative noise.
+
+10% means larger relative noise.
+
+Random Seed
+
+The code also uses:
+
+np.random.seed(42)
+
+This makes the random results reproducible.
+
+It means that when I run the experiment again, I get the
+same random noise values.
+
+This is useful because the experiment can be repeated and
+the results can be compared easily.
+
+
+## Then nonlinear optimization is used to estimate k.
+
+The objective function is:
+
+(predicted_temperature - measured_temperature)^2
+
+The optimization starts from the ML estimate:
+
+k = 0.0923
+
+The bounds for k are:
+
+0.05 <= k <= 0.15
+
+Results
+
+Noise level = 0%
+
+Measured temperature = 11.487271887444848
+
+Estimated k = 0.100015703125
+
+Parameter error = 0.0000157
+
+Noise level = 1%
+
+Measured temperature = 11.544330792704667
+
+Estimated k = 0.100304140625
+
+Parameter error = 0.0003041
+
+Noise level = 5%
+
+Measured temperature = 11.772566413743943
+
+Estimated k = 0.10160210937500001
+
+Parameter error = 0.0016021
+
+Noise level = 10%
+
+Measured temperature = 12.057860940043039
+
+Estimated k = 0.10311640625000001
+
+Parameter error = 0.0031164
+
+Discussion
+
+The results show that the estimated value of k changes when
+noise is added to the measurement.
+
+When there is no noise, the estimated value is very close to
+the true value 0.1.
+
+When the noise increases, the parameter error also increases.
+
+For example, with 10% noise:
+
+true k = 0.1
+
+estimated k = 0.103116
+
+The error is about 0.003116.
+
+This means that the optimization method is affected by noisy
+measurements, but the estimated value is still close to the
+true value.
+
+This is expected because the optimization uses the measured
+temperature to find k.
+
+Conclusion
+
+This experiment shows that the method can still estimate k
+when the measurement contains noise.
+
+However, higher noise produces a larger error.
+
+Therefore, the quality of the measurement is important for
+inverse PDE problems.

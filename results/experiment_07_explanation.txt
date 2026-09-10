@@ -1,0 +1,261 @@
+Experiment 07: Integer Programming
+
+The goal of this experiment is to use Integer Programming
+to estimate the unknown parameter k in the inverse heat equation.
+
+I use the same heat equation as in the previous experiments:
+
+u_t = k * u_xx
+
+The true value is:
+
+k = 0.1
+
+Why did I use k values from 0.05 to 0.15?
+
+I used the following possible values:
+
+0.05
+0.06
+0.07
+0.08
+0.09
+0.10
+0.11
+0.12
+0.13
+0.14
+0.15
+
+I chose this range because the true value of k is 0.1.
+
+The range contains values below and above 0.1:
+
+0.05 < 0.1 < 0.15
+
+This gives the optimization method several possible values
+to test.
+
+I also used a step of 0.01 to keep the experiment simple.
+
+The purpose is not to search for every possible real number.
+Instead, the method selects the best value from a discrete
+set of possible values.
+
+##Integer Programming Mathematical Formulation
+
+Let:
+
+i = index of the possible values of k.
+
+For example:
+
+i = 1, 2, 3, ..., 11
+
+Each i represents one possible value of k.
+
+We define a binary variable:
+
+x_i = 1 if the value k_i is selected
+
+x_i = 0 if the value k_i is not selected
+
+The optimization problem is:
+
+Minimize:
+
+sum(error_i * x_i)
+
+subject to:
+
+sum(x_i) = 1
+
+and:
+
+x_i belongs to {0, 1}
+
+What does this mean?
+
+The first equation says that we must select exactly one value
+of k.
+
+The second condition says that each x_i can only be:
+
+0 or 1
+
+So:
+
+x_i = 1 means "choose this value"
+
+x_i = 0 means "do not choose this value"
+
+The error for each possible value is:
+
+error_i = |T_i - T_measured|
+
+where:
+
+T_i = temperature calculated using k_i
+
+T_measured = measured temperature
+
+Therefore, the complete idea is:
+
+Choose one value of k that gives the smallest temperature error.
+
+Simple Example
+
+Suppose we have three possible values:
+
+k_1 = 0.09
+k_2 = 0.10
+k_3 = 0.11
+
+I can have:
+
+x_1 = 0
+x_2 = 1
+x_3 = 0
+
+This means that the optimization selected:
+
+k_2 = 0.10
+
+because x_2 is equal to 1.
+
+The objective function then uses the error associated with
+k_2.
+
+In my experiment, the selected value was:
+
+k = 0.1
+
+and the parameter error was:
+
+0.0
+
+Meaning of i
+
+The symbol i is only an index.
+
+It tells us which possible value we are talking about.
+
+For example:
+
+i = 1 -> first possible value of k
+
+i = 2 -> second possible value of k
+
+i = 3 -> third possible value of k
+
+and so on.
+
+So i does not represent a new physical parameter.
+
+It is only used to organize the possible choices.
+
+
+##Integer Programming Idea
+
+In this experiment, i use one binary variable for each
+possible value of k.
+
+A binary variable can have only two values:
+
+0 or 1
+
+For example:
+
+x = 1 means that the value of k is selected.
+
+x = 0 means that the value of k is not selected.
+
+The optimization must select exactly one value of k.
+
+##Objective Function
+
+For each possible value of k, i calculate the temperature
+at the middle of the domain.
+
+Then i calculate the error:
+
+error = |predicted_temperature - measured_temperature|
+
+The optimization tries to select the value of k with the
+smallest temperature error.
+
+##Why is this Integer Programming?
+
+The decision variables are restricted to integer values,
+specifically binary values 0 and 1.
+
+The optimization decides which candidate value of k should
+be selected.
+
+Therefore, this is a simple discrete optimization problem
+using Integer Programming.
+
+##Result
+
+True k = 0.1
+
+Measured temperature = 11.487271887444848
+
+IP estimated k = 0.1
+
+Parameter error = 0.0
+
+##Discussion
+
+The Integer Programming method selected the correct value of k.
+
+The parameter error is zero because 0.1 is one of the possible
+values given to the optimization method.
+
+This result also shows an important difference between
+continuous and discrete optimization.
+
+In this experiment, the method does not search over all
+possible real values of k.
+
+It chooses one value from a predefined set.
+
+##Important Note About the Result
+
+The Integer Programming method gave:
+
+IP estimated k = 0.1
+
+and:
+
+Parameter error = 0.0
+
+This does not mean that Integer Programming is always more
+accurate than Nonlinear Programming.
+
+The reason for the zero error is that 0.1 was already included
+in the list of possible values:
+
+0.05, 0.06, 0.07, ..., 0.10, ..., 0.15
+
+Therefore, the method was able to select exactly the true value.
+
+If the true value was not included in the list, the result could
+be different.
+
+For example, if the possible values were only:
+
+0.05, 0.07, 0.09, 0.11, 0.13, 0.15
+
+then the method could not select exactly 0.1.
+
+This is an important limitation of this simple Integer Programming
+experiment.
+
+##Conclusion
+
+Integer Programming successfully selected the correct value
+of k from the available discrete values.
+
+This experiment shows how mathematical programming can be
+used to make a discrete decision in an inverse PDE problem.

@@ -1,0 +1,137 @@
+Experiment 02: Inverse Heat Equation
+
+
+1. Idea of the experiment
+
+
+In Experiment 01, I used the heat equation to calculate the temperature
+when the value of k was known.
+
+In this experiment, I did the opposite.
+
+I know the temperature at the middle of the line, and I try to find
+the value of k that gives this temperature.
+
+This is called an inverse problem.
+
+
+2. Mathematical equation
+
+
+I used the same heat equation:
+
+u_t = k * u_xx
+
+where:
+
+u = temperature
+t = time
+x = position
+k = heat parameter
+
+The difference is that k is now treated as an unknown parameter.
+
+
+3. Numerical equation
+
+
+The program calculates the temperature using:
+
+u[i] = old_u[i] + k * dt / (dx * dx) * (
+    old_u[i + 1]
+    - 2 * old_u[i]
+    + old_u[i - 1]
+)
+
+
+4. Meaning of i
+
+
+The variable i represents the position inside the line.
+
+For example:
+
+i = 1  , first point inside the line
+i = 2  , second point
+i = 3  , third point
+
+For each i, the program uses three nearby temperatures:
+
+old_u[i - 1]  , point on the left
+old_u[i]      , current point
+old_u[i + 1]  , point on the right
+
+The program repeats this calculation for all points inside the line.
+
+
+5. How I estimated k
+
+
+First, I created a temperature using the known value:
+
+true_k = 0.1
+
+This temperature was used as the measured temperature.
+
+Then, I tested many possible values of k between:
+
+0.05 and 0.15
+
+For every value of k, the program calculated the temperature at the
+middle of the line.
+
+Then I calculated the error:
+
+error = abs(predicted_temperature - measured_temperature)
+
+The value of k with the smallest error was selected as the estimated k.
+
+
+6. Result
+
+
+The program gave:
+
+True k = 0.1
+
+Measured temperature = 11.487271887444848
+
+Estimated k = 0.1
+
+Error = 0.0
+
+
+7. Simple interpretation
+
+
+The true value of k was 0.1.
+
+The program tested different values of k and found:
+
+Estimated k = 0.1
+
+The error was:
+
+0.0
+
+This means that the program successfully found the correct value of k
+for this simple test.
+
+
+8. Conclusion
+
+
+In this experiment, I solved a simple inverse heat equation problem.
+
+Instead of knowing k and calculating the temperature, I used the
+temperature to estimate k.
+
+The variable i was used to calculate the temperature at different
+positions.
+
+The result was exact for this test because the measured temperature
+was created using the same model and the same value of k.
+
+This experiment is the starting point for the next parts of the project,
+where machine learning and optimization will be used to help solve
+the inverse problem.
