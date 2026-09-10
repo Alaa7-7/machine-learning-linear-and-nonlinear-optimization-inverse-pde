@@ -654,3 +654,22 @@ The main idea is simple:
 
 Machine Learning can provide an initial estimate, and optimization can improve the estimate.
 ```
+
+## 15 What I Learned
+
+```
+In this project, I learned how to use a simple PDE model to study an inverse problem.
+
+I learned how to:
+
+- solve a simple heat equation using numerical methods,
+- estimate an unknown parameter from a measured temperature,
+- use Machine Learning to get an initial estimate,
+- use optimization methods to improve the estimate,
+- compare different optimization methods,
+- study the effect of measurement noise.
+
+The main idea I learned is that Machine Learning can give a useful initial estimate, and optimization can improve this estimate.
+
+This project also helped me understand how mathematics, numerical methods, Machine Learning, and optimization can work together in one problem.
+```
