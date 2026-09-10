@@ -410,7 +410,7 @@ Error = |k_estimated - k_true|
 
 -----------------------------------------------------------------------------------------------------------------------
 
-## 8. Machine Learning vs Nonlinear Optimization
+## 8. Machine Learning and Nonlinear Optimization
 
 ```
 One of the main comparisons in the project is between Machine Learning and Nonlinear Optimization.
